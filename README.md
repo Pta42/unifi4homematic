@@ -15,4 +15,4 @@ Open the file in your preferred editor and change the settings between ```START 
 
 Run the file using cron, e.g.:
 
-```*/5 * * * * /path/to/unifi-presence.py```
+```*/5 * * * *  user  /path/to/unifi-presence.py```
