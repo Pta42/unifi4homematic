@@ -15,6 +15,7 @@
 # limitations under the License.
 
 import requests
+import argparse
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
 # ------ START CONFIG --------------------------------------------------------
 
@@ -38,12 +39,15 @@ unifi = 'unifi:8443'
 # Hostname of the Homematic CCU2
 ccu2 = 'homematic-ccu2'
 
-
 # ------ END CONFIG ---------------------------------------------------------
 # Suppress SSL warning caused by the self signed certificate of the controller
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
-isHere = []
 
+parser = argparse.ArgumentParser()
+parser.add_argument('-q', '--quiet', help="be quiet, shows only errors", action="store_true")
+args = parser.parse_args()
+
+isHere = []
 req = requests.Session()
 
 # Login to the controller
@@ -61,7 +65,8 @@ if r.status_code == 200:
 
     for user, ise in presencevars.items():
         value = '1' if user in isHere else '0'
-        print('{0} is {1}.'.format(user, 'online' if user in isHere else 'offline'))
+        if not args.quiet:
+            print('{0} is {1}.'.format(user, 'online' if user in isHere else 'offline'))
 
         url = 'http://{0}/config/xmlapi/statechange.cgi?ise_id={1}&new_value={2}'
         req.get(url.format(ccu2, ise, value))
