@@ -66,7 +66,7 @@ if r.status_code == 200:
     for user, ise in presencevars.items():
         value = '1' if user in isHere else '0'
         if not args.quiet:
-            print('{0} is {1}.'.format(user, 'online' if user in isHere else 'offline'))
+            print('{0} is {1}.'.format(user.title(), 'online' if user in isHere else 'offline'))
 
         url = 'http://{0}/config/xmlapi/statechange.cgi?ise_id={1}&new_value={2}'
         req.get(url.format(ccu2, ise, value))
